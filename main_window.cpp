@@ -10,12 +10,11 @@
 #include <QWidget>
 
 const size_t TOP_OFFSET = 9;
-const size_t LEFT_OFFSET = 24;
-const size_t BOX_SIZE = 83; // Square(83x83)
-const size_t DELAY = 500;   // 500 ms
+const size_t LEFT_OFFSET = 24; // letter frame width
+const size_t BOX_SIZE = 83;    // Square(83px x 83px)
+const size_t DELAY = 500;      // 500 ms
 
 MainWindow::MainWindow() {
-
   QVBoxLayout *main_window = new QVBoxLayout();
 
   createBoard(main_window);
@@ -34,15 +33,15 @@ void MainWindow::createBoard(QLayout *layout) {
   QPixmap board(":images/board.png");
   scene->addPixmap(board);
 
-  QPixmap horse_pixmap(":images/horse.png");
-  horse_ = scene->addPixmap(horse_pixmap);
-  horse_->hide();
+  QPixmap knight_pixmap(":images/knight.png");
+
+  knight_ = scene->addPixmap(knight_pixmap);
+  knight_->hide();
 
   layout->addWidget(view);
 }
 
 void MainWindow::createLineEdits(QLayout *layout) {
-
   QGridLayout *line_edits = new QGridLayout();
 
   start_pos_line_edit_ = new QLineEdit();
@@ -77,7 +76,8 @@ void MainWindow::createErrorLabel(QLayout *layout) {
 
 void MainWindow::setHorsePosition(int x, int y) {
   // Pos {0,0} - lower left corner, Pos{7,7} - top right corner
-  horse_->setPos(BOX_SIZE * (x) + LEFT_OFFSET, BOX_SIZE * (7 - y) + TOP_OFFSET);
+  knight_->setPos(BOX_SIZE * (x) + LEFT_OFFSET,
+                  BOX_SIZE * (7 - y) + TOP_OFFSET);
 }
 
 void MainWindow::startMoving() {
@@ -88,11 +88,12 @@ void MainWindow::startMoving() {
   const QString end_pos = end_pos_line_edit_->text();
 
   std::vector<Position> path;
+
   try {
     path = knight(start_pos.toStdString(), end_pos.toStdString());
-    horse_->show();
+    knight_->show();
     emit error(""); // clear error label;
-  } catch (std::exception &e) {
+  } catch (WrongPosition &e) {
     emit error(e.what());
   }
 

@@ -1,5 +1,4 @@
-#ifndef MAIN_WINDOW_H
-#define MAIN_WINDOW_H
+#pragma once
 
 #include <QGraphicsItem>
 #include <QGraphicsView>
@@ -18,7 +17,7 @@ private:
   void createButton(QLayout *layout);
   void createErrorLabel(QLayout *layout);
 
-  QGraphicsPixmapItem *horse_;
+  QGraphicsPixmapItem *knight_;
   QLineEdit *start_pos_line_edit_;
   QLineEdit *end_pos_line_edit_;
 
@@ -29,5 +28,3 @@ public slots:
 
   void startMoving();
 };
-
-#endif // MAIN_WINDOW_H
